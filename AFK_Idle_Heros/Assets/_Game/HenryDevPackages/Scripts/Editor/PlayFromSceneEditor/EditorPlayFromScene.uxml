@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:Label tabindex="-1" text="Scene Utils" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-font-style: bold; -unity-text-align: middle-center;" />
+        <ui:VisualElement style="flex-grow: 1; flex-direction: column;">
+            <ui:VisualElement style="flex-grow: 1; height: 20%; flex-direction: row; justify-content: space-between;">
+                <uie:ToolbarSearchField focusable="true" name="_sceneSearchField" style="width: 58%; margin-left: 10px; margin-right: 2px; padding-right: 10px;" />
+                <ui:Toggle label="Keep previous scene" name="_keepPrevSceneToggle" value="true" style="width: 40%; flex-direction: row-reverse; justify-content: flex-start; align-items: flex-start; align-self: auto; flex-basis: 35%; flex-wrap: wrap; margin-top: 0; height: auto; margin-bottom: 0; -unity-font-style: bold; white-space: normal; text-overflow: clip;" />
+            </ui:VisualElement>
+            <ui:GroupBox style="flex-direction: row; height: 90%; padding-top: 5px; margin-top: 6px;">
+                <ui:ListView focusable="true" name="_sceneButtonListView" virtualization-method="DynamicHeight" show-border="true" horizontal-scrolling="false" style="height: 100%; width: 60%;" />
+                <ui:VisualElement name="VisualElement" style="flex-grow: 1; width: 40%; height: 100%;">
+                    <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="_btnOpen" />
+                    <ui:Button text="Play" parse-escape-sequences="true" display-tooltip-when-elided="true" name="_btnPlay" />
+                    <ui:Button text="Play Main" parse-escape-sequences="true" display-tooltip-when-elided="true" name="_btnPlayMain" />
+                    <ui:Button text="Play MainMenu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="_btnPlayMainRoom" />
+                    <ui:Button text="Open Additive" parse-escape-sequences="true" display-tooltip-when-elided="true" name="_btnOpenAdditive" />
+                    <ui:Button text="Reload" parse-escape-sequences="true" display-tooltip-when-elided="true" name="_btnReload" />
+                </ui:VisualElement>
+            </ui:GroupBox>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
