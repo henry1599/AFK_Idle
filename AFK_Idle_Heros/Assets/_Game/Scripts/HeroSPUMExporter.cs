@@ -13,8 +13,8 @@ namespace AFK.Idle.EditorTools
     public class HeroSPUMExporter : MonoBehaviour
     {
         private static string SPUM_UNIT_PATH = "Units/";
-        private static string LINKER_PATH = "Assets/_Game/HeroData/Resources/Json/heroLinker.json";
-        private static string EXPORT_PATH = "Assets/_Game/HeroData/Resources/Heroes/";
+        private static string LINKER_PATH = "Assets/_Game/HeroData/Json/heroLinker.json";
+        private static string EXPORT_PATH = "Assets/_Game/HeroData/Heroes/";
         private static string SPUM_CONTROLLER = "Assets/SPUM/Basic_Resources/Animator/Unit/SPUMController.controller";
         [SerializeField] Transform heroContainer;
         [SerializeField] CanvasScaler scaler;
@@ -96,7 +96,7 @@ namespace AFK.Idle.EditorTools
             {
                 if (linker.SPUMCode == SPUMCode)
                 {
-                    var heroPrefab = Resources.Load(string.Format("Heroes/{1}/{2}", EXPORT_PATH, linker.HeroCode, linker.HeroCode)) as GameObject;
+                    var heroPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(string.Format("{0}{1}/{2}.prefab", EXPORT_PATH, linker.HeroCode, linker.HeroCode));
                     return heroPrefab?.GetComponent<UnitPrefab>();
                 }
             }
@@ -136,6 +136,10 @@ namespace AFK.Idle.EditorTools
         }
         void ExportHero()
         {
+            string heroPrefabPath = CreateHeroPrefab();
+        }
+        string CreateHeroPrefab()
+        {
             var curHero = this.heroList[this.index];
             string heroCode = this.heroCode.text;
             string heroName = this.heroName.text;
@@ -172,6 +176,8 @@ namespace AFK.Idle.EditorTools
             LoadLinker();
 
             Destroy(heroPrefab);
+
+            return exportPath;
         }
         string CreateHeroFolder(string heroCode)
         {
