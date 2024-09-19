@@ -548,6 +548,51 @@ namespace HenryDev
             }
             return characterList;
         }
+        public static RectTransform SetSizeDeltaX(this RectTransform rectTransform, float x)
+        {
+            rectTransform.sizeDelta = new Vector2(x, rectTransform.sizeDelta.y);
+            return rectTransform;
+        }
+        public static RectTransform SetSizeDeltaY(this RectTransform rectTransform, float y)
+        {
+            rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, y);
+            return rectTransform;
+        }
+        public static RectTransform SetSizeDelta(this RectTransform rectTransform, float x, float y)
+        {
+            rectTransform.sizeDelta = new Vector2(x, y);
+            return rectTransform;
+        }
+        public static RectTransform SetTop(this RectTransform rectTransform, float top)
+        {
+            rectTransform.offsetMax = new Vector2(rectTransform.offsetMax.x, -top);
+            return rectTransform;
+        }
+        public static RectTransform SetBottom(this RectTransform rectTransform, float bottom)
+        {
+            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, bottom);
+            return rectTransform;
+        }
+        public static RectTransform SetLeft(this RectTransform rectTransform, float left)
+        {
+            rectTransform.offsetMin = new Vector2(left, rectTransform.offsetMin.y);
+            return rectTransform;
+        }
+        public static RectTransform SetRight(this RectTransform rectTransform, float right)
+        {
+            rectTransform.offsetMax = new Vector2(-right, rectTransform.offsetMax.y);
+            return rectTransform;
+        }
+        public static RectTransform SetAnchorPosX(this RectTransform rectTransform, float x)
+        {
+            rectTransform.anchoredPosition = new Vector2(x, rectTransform.anchoredPosition.y);
+            return rectTransform;
+        }
+        public static RectTransform SetAnchorPosY(this RectTransform rectTransform, float y)
+        {
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, y);
+            return rectTransform;
+        }
     }
 
     public static class CommonUtilities
