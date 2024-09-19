@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEditor;
 using HenryDev;
+using System.IO;
+using HenryDev.Utilities;
 
 namespace AFK.Idle.EditorTools
 {
@@ -13,6 +15,7 @@ namespace AFK.Idle.EditorTools
         private static string SPUM_UNIT_PATH = "Units/";
         private static string LINKER_PATH = "Assets/_Game/HeroData/Resources/Json/heroLinker.json";
         private static string EXPORT_PATH = "Assets/_Game/HeroData/Resources/Heroes/";
+        private static string SPUM_CONTROLLER = "Assets/SPUM/Basic_Resources/Animator/Unit/SPUMController.controller";
         [SerializeField] Transform heroContainer;
         [SerializeField] CanvasScaler scaler;
         [SerializeField] TMP_Text heroSPUMCode; 
@@ -137,7 +140,10 @@ namespace AFK.Idle.EditorTools
             string heroCode = this.heroCode.text;
             string heroName = this.heroName.text;
             string spumCode = this.heroSPUMCode.text;
-            string exportPath = EXPORT_PATH + heroCode + ".prefab";
+
+            string exportFolder = CreateHeroFolder(heroCode);
+            string exportPath = exportFolder + heroCode + ".prefab";
+            string clonedAnimator = exportFolder + heroCode + "_Controller.controller";
 
             GameObject unitPrefab = curHero.transform.GetChild(0).gameObject;
             GameObject heroPrefab = Instantiate(unitPrefab);
@@ -146,7 +152,11 @@ namespace AFK.Idle.EditorTools
             UnitPrefab unit = heroPrefab.AddComponent<UnitPrefab>();
             unit.CopySpumPackage(curHero.spumPackages);
             unit.CopyUnitType(curHero.UnitType);
-            unit.Anim = heroPrefab.GetComponent<Animator>();
+
+            AssetDatabase.CopyAsset(SPUM_CONTROLLER, clonedAnimator);
+            RuntimeAnimatorController animator = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(clonedAnimator);
+            unit.Anim = unit.gameObject.SafeAddComponent<Animator>();
+            unit.Anim.runtimeAnimatorController = animator;
             unit.Data = new HeroData()
             {
                 HeroCode = heroCode,
@@ -154,13 +164,24 @@ namespace AFK.Idle.EditorTools
                 SPUMCode = spumCode
             };
             unit.QuickSetup();
-            this.heroLinkerList.HeroLinkers.Add(new HeroLinker(spumCode, heroCode));
+            this.heroLinkerList.AddNewLinker(spumCode, heroCode);
 
             PrefabUtility.SaveAsPrefabAsset(heroPrefab, exportPath);
             AssetDatabase.SaveAssets();
             SaveLinker();
+            LoadLinker();
 
             Destroy(heroPrefab);
+        }
+        string CreateHeroFolder(string heroCode)
+        {
+            string path = EXPORT_PATH + heroCode;
+            if (File.Exists(path))
+            {
+                return path + "/";
+            }
+            Directory.CreateDirectory(path);
+            return path + "/";
         }
     }
     [System.Serializable]
@@ -170,6 +191,15 @@ namespace AFK.Idle.EditorTools
         public HeroLinkerList()
         {
             HeroLinkers = new List<HeroLinker>();
+        }
+        public void AddNewLinker(string spumCode, string heroCode)
+        {
+            var foundData = HeroLinkers.Find(x => x.SPUMCode == spumCode);
+            if (foundData != null)
+            {
+                return;
+            }
+            HeroLinkers.Add(new HeroLinker(spumCode, heroCode));
         }
     }
     [System.Serializable]

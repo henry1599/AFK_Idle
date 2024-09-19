@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
+using RotaryHeart.Lib.SerializableDictionary;
+using Sirenix.Utilities;
 
 namespace AFK.Idle 
 {
@@ -26,6 +28,8 @@ namespace AFK.Idle
         public string HeroCode;
         public string HeroName;
     }
+    [System.Serializable]
+    public class AnimationDict : SerializableDictionaryBase<eAnimationDetail, AnimationClip> {}
     public class UnitPrefab : MonoBehaviour
     {
         private Dictionary<eAnimationDetail, string> animationDetailDict = new Dictionary<eAnimationDetail, string>
@@ -45,48 +49,37 @@ namespace AFK.Idle
         public bool showData;
         [ShowIf(nameof(showData)), SerializeField] private string unitType;
         [ShowIf(nameof(showData)), SerializeField] private List<SpumPackage> spumPackages = new List<SpumPackage>();
-        [ShowIf(nameof(showData)), SerializeField] private AnimatorOverrideController overrideController;    
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<string, Dictionary<eAnimationDetail, AnimationClip>> stateAnimationPairs = new();
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<eAnimationDetail, AnimationClip> idleList = new();
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<eAnimationDetail, AnimationClip> moveList = new();
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<eAnimationDetail, AnimationClip> attackList = new();
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<eAnimationDetail, AnimationClip> damagedList = new();
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<eAnimationDetail, AnimationClip> debuffList = new();
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<eAnimationDetail, AnimationClip> deathList = new();
-        [ShowIf(nameof(showData)), SerializeField] private Dictionary<eAnimationDetail, AnimationClip> otherList = new();
-#if UNITY_EDITOR
-        public void CopySpumPackage(List<SpumPackage> packages)
+        [ShowIf(nameof(showData)), SerializeField] private AnimatorOverrideController overrideController;
+        [ShowIf(nameof(showData)), SerializeField] private Dictionary<string, AnimationDict> stateAnimationPairs = new();
+        [ShowIf(nameof(showData)), SerializeField] private AnimationDict idleList = new();
+        [ShowIf(nameof(showData)), SerializeField] private AnimationDict moveList = new();
+        [ShowIf(nameof(showData)), SerializeField] private AnimationDict attackList = new();
+        [ShowIf(nameof(showData)), SerializeField] private AnimationDict damagedList = new();
+        [ShowIf(nameof(showData)), SerializeField] private AnimationDict debuffList = new();
+        [ShowIf(nameof(showData)), SerializeField] private AnimationDict deathList = new();
+        [ShowIf(nameof(showData)), SerializeField] private AnimationDict otherList = new();
+        void Start()
         {
-            spumPackages = packages;
-        }
-        public void CopyUnitType(string type)
-        {
-            unitType = type;
-        }
-        [Button]
-        public void QuickSetup()
-        {
-            PopulateAnimationLists();
             OverrideControllerInit();
         }
         public void OverrideControllerInit()
         {
             Animator animator = this.Anim;
-            this.overrideController = new AnimatorOverrideController();
-            this.overrideController.runtimeAnimatorController = animator.runtimeAnimatorController;
+            overrideController = new AnimatorOverrideController();
+            overrideController.runtimeAnimatorController= animator.runtimeAnimatorController;
 
             AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
 
             foreach (AnimationClip clip in clips)
             {
-                this.overrideController[clip.name] = clip;
+                overrideController[clip.name] = clip;
             }
 
-            animator.runtimeAnimatorController= this.overrideController;
+        animator.runtimeAnimatorController= overrideController;
             foreach (PlayerState state in Enum.GetValues(typeof(PlayerState)))
             {
                 var stateText = state.ToString();
-                stateAnimationPairs[stateText] = new Dictionary<eAnimationDetail, AnimationClip>();
+                stateAnimationPairs[stateText] = new AnimationDict();
                 switch (stateText)
                 {
                     case "IDLE":
@@ -112,6 +105,20 @@ namespace AFK.Idle
                         break;
                 }
             }
+        }
+#if UNITY_EDITOR
+        public void CopySpumPackage(List<SpumPackage> packages)
+        {
+            spumPackages = packages;
+        }
+        public void CopyUnitType(string type)
+        {
+            unitType = type;
+        }
+        [Button]
+        public void QuickSetup()
+        {
+            PopulateAnimationLists();
         }
         public void PopulateAnimationLists()
         {
@@ -202,7 +209,8 @@ namespace AFK.Idle
             return clip;
         }
 #endif
-        public void PlayAnimation(PlayerState PlayState, eAnimationDetail detail){
+        public void PlayAnimation(PlayerState PlayState, eAnimationDetail detail = eAnimationDetail.NO_DETAIL)
+        {
             Animator animator = this.Anim;
             //Debug.Log(PlayState.ToString());
             var animations =  stateAnimationPairs[PlayState.ToString()];
@@ -232,6 +240,62 @@ namespace AFK.Idle
                     }
                 }
             }
+        }
+
+        [Button("Play Idle")]
+        public void PlayIdle()
+        {
+            PlayAnimation(PlayerState.IDLE);
+        }
+        [Button("Play Move")]
+        public void PlayMove()
+        {
+            PlayAnimation(PlayerState.MOVE);
+        }
+        [Button("Play Normal Melee Attack")]
+        public void PlayNormalMeleeAttack()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.NORMAL_ATTACK_MELEE);
+        }
+        [Button("Play Normal Range Attack")]
+        public void PlayNormalRangeAttack()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.NORMAL_ATTACK_RANGE);
+        }
+        [Button("Play Normal Skill Attack")]
+        public void PlayNormalSkillAttack()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.NORMAL_ATTACK_SKILL);
+        }
+        [Button("Play Special Melee Attack")]
+        public void PlaySpecialMeleeAttack()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SPECIAL_ATTACK_MELEE);
+        }
+        [Button("Play Special Range Attack")]
+        public void PlaySpecialRangeAttack()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SPECIAL_ATTACK_RANGE);
+        }
+        [Button("Play Special Skill Attack")]
+        public void PlaySpecialSkillAttack()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SPECIAL_ATTACK_SKILL);
+        }
+        [Button("Play Concentrate")]
+        public void PlayConcentrate()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.CONCENTRATE);
+        }
+        [Button("Play Buff")]
+        public void PlayBuff()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.BUFF);
+        }
+        [Button("Play Sit")]
+        public void PlaySit()
+        {
+            PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SIT);
         }
     }
 }

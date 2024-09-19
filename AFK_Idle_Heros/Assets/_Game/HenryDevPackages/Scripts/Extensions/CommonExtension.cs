@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace HenryDev
@@ -603,6 +604,11 @@ namespace HenryDev
             string result = reader.ReadToEnd();
             reader.Close();
             return result;
+        }
+        public static string DuplicateFile(string origin, string destination)
+        {
+            FileUtil.CopyFileOrDirectory(origin, destination);
+            return destination;
         }
     }
 }
