@@ -8,7 +8,7 @@ using HenryDev;
 using System.IO;
 using HenryDev.Utilities;
 using UnityEditor;
-using UnityEditor.VersionControl;
+using HenryDev.Math;
 
 namespace AFK.Idle.EditorTools
 {

@@ -594,6 +594,65 @@ namespace HenryDev
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, y);
             return rectTransform;
         }
+        public static List<string> Cut(this string str, int segmentLength = 1, bool isReversed = false)
+        {
+            List<string> segments = new List<string>();
+            if (isReversed)
+            {
+                for (int i = str.Length - 1; i >= 0; i -= segmentLength)
+                {
+                    int startIndex = i - segmentLength + 1;
+                    if (startIndex < 0)
+                    {
+                        startIndex = 0;
+                    }
+                    segments.Insert(0, str.Substring(startIndex, i - startIndex + 1));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < str.Length; i += segmentLength)
+                {
+                    int endIndex = i + segmentLength - 1;
+                    if (endIndex >= str.Length)
+                    {
+                        endIndex = str.Length - 1;
+                    }
+                    segments.Add(str.Substring(i, endIndex - i + 1));
+                }
+            }
+            return segments;
+        }
+        public static string TrimLeft(this string str, char trimChar, int skipFromIndex = -1)
+        {
+            int startIndex = 0;
+            for (int i = skipFromIndex + 1; i < str.Length; i++)
+            {
+                if (str[i] != trimChar)
+                {
+                    startIndex = i;
+                    break;
+                }
+            }
+            return str.Substring(startIndex);
+        }
+        public static string TrimRight(this string str, char trimChar, int skipFromIndex = -1)
+        {
+            int endIndex = str.Length - 1;
+            for (int i = str.Length - 1 - skipFromIndex - 1; i >= 0; i--)
+            {
+                if (str[i] != trimChar)
+                {
+                    endIndex = i;
+                    break;
+                }
+            }
+            return str.Substring(0, endIndex + 1);
+        }
+        public static string Trim(this string str, char trimChar)
+        {
+            return str.TrimLeft(trimChar).TrimRight(trimChar);
+        }
     }
 
     public static class CommonUtilities
