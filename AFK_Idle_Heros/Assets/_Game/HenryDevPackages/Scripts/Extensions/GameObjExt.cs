@@ -27,6 +27,14 @@ namespace HenryDev.Utilities
             }
             return component;
         }
+        public static void SetLayerRecursively(this GameObject gameObject, string layer)
+        {
+            gameObject.layer = LayerMask.NameToLayer(layer);
+            foreach (Transform child in gameObject.transform)
+            {
+                child.gameObject.SetLayerRecursively(layer);
+            }
+        }
     }
     public static class ObjectExt
     {

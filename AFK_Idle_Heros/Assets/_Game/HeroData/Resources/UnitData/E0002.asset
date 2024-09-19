@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e890cffa1e83d84aa20c6c2da0f0781, type: 3}
+  m_Name: E0002
+  m_EditorClassIdentifier: 
+  UnitName: Enemy0002
+  UnitCode: E0002
+  SPUMCode: SPUM_20240919174504226
+  UnitPrefab: {fileID: 5591783370910869105, guid: e86aef64f8ee478418684c5e40d53b37, type: 3}
+  UnitIcon: {fileID: 21300000, guid: 8c78000982a433d4ab0e6c5084779fd9, type: 3}

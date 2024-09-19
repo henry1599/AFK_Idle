@@ -605,10 +605,19 @@ namespace HenryDev
             reader.Close();
             return result;
         }
+        public static void ClearTextFileContent(string path)
+        {
+            File.Create(path).Close();
+        }
         public static string DuplicateFile(string origin, string destination)
         {
             FileUtil.CopyFileOrDirectory(origin, destination);
             return destination;
+        }
+        
+        public static void OpenFolder(string savePath)
+        {
+            EditorUtility.RevealInFinder(savePath);
         }
     }
 }

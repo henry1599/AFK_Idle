@@ -59,6 +59,7 @@ namespace AFK.Idle
         [ShowIf(nameof(showData)), SerializeField] private AnimationDict debuffList = new();
         [ShowIf(nameof(showData)), SerializeField] private AnimationDict deathList = new();
         [ShowIf(nameof(showData)), SerializeField] private AnimationDict otherList = new();
+        public bool HasHorse => string.Compare(this.unitType, "horse", StringComparison.OrdinalIgnoreCase) == 0;
         void Start()
         {
             OverrideControllerInit();

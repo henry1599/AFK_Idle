@@ -1,12 +1,14 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor;
 using HenryDev;
 using System.IO;
 using HenryDev.Utilities;
+using UnityEditor;
+using UnityEditor.VersionControl;
 
 namespace AFK.Idle.EditorTools
 {
@@ -16,6 +18,7 @@ namespace AFK.Idle.EditorTools
         private static string LINKER_PATH = "Assets/_Game/HeroData/Json/heroLinker.json";
         private static string EXPORT_PATH = "Assets/_Game/HeroData/Heroes/";
         private static string SPUM_CONTROLLER = "Assets/SPUM/Basic_Resources/Animator/Unit/SPUMController.controller";
+        private static string UNIT_DATA_PATH = "Assets/_Game/HeroData/Resources/UnitData/";
         [SerializeField] Transform heroContainer;
         [SerializeField] CanvasScaler scaler;
         [SerializeField] TMP_Text heroSPUMCode; 
@@ -24,8 +27,11 @@ namespace AFK.Idle.EditorTools
         [SerializeField] Button exportButton;
         [SerializeField] Button nextButton;
         [SerializeField] Button prevButton;
+        [SerializeField] Camera captureCamera;
+        [SerializeField] LayerMask captureLayer;
         private List<SPUM_Prefabs> heroList = new List<SPUM_Prefabs>();
         private int index = 0;
+        private RenderTexture rt;
         private HeroLinkerList heroLinkerList = new HeroLinkerList();
         void Awake()
         {
@@ -70,10 +76,12 @@ namespace AFK.Idle.EditorTools
             Init();
             var curHero = this.heroList[this.index];
             var curHeroInstance = Instantiate(curHero.gameObject, this.heroContainer);
+            curHeroInstance.StripCloneName();
+            curHeroInstance.SetLayerRecursively("Capture");
             var curHeroRect = curHeroInstance.GetComponent<RectTransform>();
             curHeroRect
                 .SetAnchorPosX(-this.scaler.referenceResolution.x / 2)
-                .SetAnchorPosY(-this.scaler.referenceResolution.y / 2);
+                .SetAnchorPosY(-this.scaler.referenceResolution.y / 2 - 1);
             curHeroInstance.transform.localScale = Vector3.one * 2;
             var curHeroPrefab = curHeroInstance.GetComponent<SPUM_Prefabs>();
             this.heroSPUMCode.text = curHeroPrefab._code;
@@ -137,6 +145,9 @@ namespace AFK.Idle.EditorTools
         void ExportHero()
         {
             string heroPrefabPath = CreateHeroPrefab();
+            CreateHeroIcon(heroPrefabPath);
+
+            CreateData(heroPrefabPath);
         }
         string CreateHeroPrefab()
         {
@@ -179,6 +190,64 @@ namespace AFK.Idle.EditorTools
 
             return exportPath;
         }
+        void CreateData(string prefabPath)
+        {
+            string heroCode = this.heroCode.text;
+            string heroName = this.heroName.text;
+            string spumCode = this.heroSPUMCode.text;
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            Sprite icon = AssetDatabase.LoadAssetAtPath<Sprite>(string.Format("{0}{1}/{2}.png", EXPORT_PATH, heroCode, heroCode));
+
+            UnitData data = ScriptableObject.CreateInstance<UnitData>();
+            data.UnitName = heroName;
+            data.UnitCode = heroCode;
+            data.SPUMCode = spumCode;
+            data.UnitPrefab = prefab;
+            data.UnitIcon = icon;
+
+            string dataPath = UNIT_DATA_PATH + heroCode + ".asset";
+            AssetDatabase.CreateAsset(data, dataPath);
+            AssetDatabase.SaveAssets();
+        }
+        void CreateHeroIcon(string prefabPath)
+        {
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            UnitPrefab unit = prefab.GetComponent<UnitPrefab>();
+            CaptureSingleTake(unit.Data.HeroCode, 2048);
+        }
+        public void CaptureSingleTake(string id, int captureSize = 2048)
+        {
+            this.captureCamera.clearFlags = CameraClearFlags.Depth;
+            this.captureCamera.backgroundColor = Color.clear;
+            this.captureCamera.cullingMask = this.captureLayer;
+            var tex = new Texture2D(captureSize, captureSize, TextureFormat.ARGB32, false, true);
+            tex.filterMode = FilterMode.Trilinear;
+            tex.anisoLevel = 16;
+
+            var grab_area = new Rect(0, 0, captureSize, captureSize);
+            rt = new RenderTexture(captureSize, captureSize, 12, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+            rt.filterMode = FilterMode.Trilinear;
+            rt.anisoLevel = 16;
+
+            RenderTexture.active = rt;
+            this.captureCamera.targetTexture = rt;
+
+            this.captureCamera.Render();
+            tex.ReadPixels(grab_area, 0, 0);
+
+            this.captureCamera.targetTexture = null;
+
+            byte[] bytes = ImageConversion.EncodeToPNG(tex);
+
+            string finalPath = string.Format("{0}{1}/{2}", EXPORT_PATH, id, id);
+
+            File.WriteAllBytes(finalPath + ".png", bytes);
+            DestroyImmediate(tex);
+            rt.Release();
+
+            AssetDatabase.Refresh();
+            AssetDatabase.SaveAssets();
+        }
         string CreateHeroFolder(string heroCode)
         {
             string path = EXPORT_PATH + heroCode;
@@ -188,6 +257,31 @@ namespace AFK.Idle.EditorTools
             }
             Directory.CreateDirectory(path);
             return path + "/";
+        }
+
+
+        [MenuItem("Tools/Remove All Unit Data")]
+        public static void RemoveAllUnitData()
+        {
+            // * Hero Prefab
+            if (Directory.Exists(EXPORT_PATH)) 
+            { 
+                Directory.Delete(EXPORT_PATH, true); 
+            }
+            Directory.CreateDirectory(EXPORT_PATH);
+
+            // * Hero Data
+            if (Directory.Exists(UNIT_DATA_PATH)) 
+            { 
+                Directory.Delete(UNIT_DATA_PATH, true); 
+            }
+            Directory.CreateDirectory(UNIT_DATA_PATH);
+
+            // * Json Linker
+            CommonUtilities.ClearTextFileContent(LINKER_PATH);
+
+            AssetDatabase.Refresh();
+            AssetDatabase.SaveAssets();
         }
     }
     [System.Serializable]
@@ -220,3 +314,4 @@ namespace AFK.Idle.EditorTools
         }
     }
 }
+#endif
