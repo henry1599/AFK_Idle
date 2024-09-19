@@ -22,6 +22,7 @@ namespace AFK.Idle
         BUFF,
         SIT
     }
+    [System.Serializable]
     public class HeroData
     {
         public string SPUMCode;

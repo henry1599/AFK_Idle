@@ -96,8 +96,8 @@ namespace AFK.Idle.EditorTools
             {
                 if (linker.SPUMCode == SPUMCode)
                 {
-                    var heroPrefab = Resources.Load<UnitPrefab>(EXPORT_PATH + linker.HeroCode);
-                    return heroPrefab;
+                    var heroPrefab = Resources.Load(string.Format("Heroes/{1}/{2}", EXPORT_PATH, linker.HeroCode, linker.HeroCode)) as GameObject;
+                    return heroPrefab?.GetComponent<UnitPrefab>();
                 }
             }
             return null;
