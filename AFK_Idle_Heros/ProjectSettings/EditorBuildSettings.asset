@@ -6,9 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 7dadcb80bdbc7d44db69a42f678431a8
+  - enabled: 1
     path: Assets/Scenes/HeroExporter.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/HeroShowcase.unity
     guid: 1912114a4ddb146408a794cf02b101e5
+  - enabled: 1
+    path: Assets/SPUM/Scene/SPUM_Scene.unity
+    guid: ba9a45dba30244370b4169d16c9f76a8
   m_configObjects: {}

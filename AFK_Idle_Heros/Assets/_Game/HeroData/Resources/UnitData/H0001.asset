@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e890cffa1e83d84aa20c6c2da0f0781, type: 3}
+  m_Name: H0001
+  m_EditorClassIdentifier: 
+  UnitName: Bunny
+  UnitCode: H0001
+  SPUMCode: SPUM_20240920150500065
+  UnitPrefab: {fileID: 5866611566092332232, guid: 5d7b0840694981a45b4810505d2ab050, type: 3}
+  UnitIcon: {fileID: 21300000, guid: 844a5870e01f4d34e93615360dd7a5cd, type: 3}
