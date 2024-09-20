@@ -283,6 +283,12 @@ namespace AFK.Idle.EditorTools
             AssetDatabase.Refresh();
             AssetDatabase.SaveAssets();
         }
+        // [MenuItem("Test/IInit")]
+        // public static void Test()
+        // {
+        //     IInt i = new IInt("198_565_382_909_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000");
+        //     Debug.Log(i.ToScaledString());
+        // }
     }
     [System.Serializable]
     public class HeroLinkerList

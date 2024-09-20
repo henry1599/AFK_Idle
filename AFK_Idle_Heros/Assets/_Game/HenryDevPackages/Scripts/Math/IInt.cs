@@ -40,7 +40,7 @@ namespace HenryDev.Math
             ("y", "1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000"),
             ("z", "1_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000_000"),
         };
-        private int suffixCycle => this.scaledFactor.Count;
+        private int suffixCycle => this.scaledFactor.Count; // 26
         private int precision;
 
         public int Length => Value.Length;
@@ -115,7 +115,16 @@ namespace HenryDev.Math
             {
                 return actualValue;
             }
+            int fullSuffixIndex = suffixIndex / this.suffixCycle;
+            if (fullSuffixIndex > 0)
+            {
+                suffixIndex %= this.suffixCycle;
+            }
             string suffix = this.scaledFactor[suffixIndex].suffix;
+            for (int i = 0; i < fullSuffixIndex; i++)
+            {
+                suffix = this.scaledFactor[^1].suffix + suffix;
+            }
             List<string> precisionSegments = segments.GetRange(0, precisionSegmentCount);
             string value = string.Join(",", precisionSegments) + suffix;
             return value;
