@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace HenryDev.Math
 {
+    [System.Serializable]
     public class IInt
     {
         public string Value;
