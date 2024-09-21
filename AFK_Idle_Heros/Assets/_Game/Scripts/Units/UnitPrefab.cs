@@ -255,33 +255,39 @@ namespace AFK.Idle
             PlayAnimation(PlayerState.MOVE);
         }
         [Button("Play Normal Melee Attack")]
-        public void PlayNormalMeleeAttack()
+        public void PlayNormalMeleeAttack(float attackSpeed)
         {
+            this.Anim.SetFloat("AttackSpeed", attackSpeed);
             PlayAnimation(PlayerState.ATTACK, eAnimationDetail.NORMAL_ATTACK_MELEE);
         }
         [Button("Play Normal Range Attack")]
-        public void PlayNormalRangeAttack()
+        public void PlayNormalRangeAttack(float attackSpeed)
         {
+            this.Anim.SetFloat("AttackSpeed", attackSpeed);
             PlayAnimation(PlayerState.ATTACK, eAnimationDetail.NORMAL_ATTACK_RANGE);
         }
         [Button("Play Normal Skill Attack")]
-        public void PlayNormalSkillAttack()
+        public void PlayNormalSkillAttack(float attackSpeed)
         {
+            this.Anim.SetFloat("AttackSpeed", attackSpeed);
             PlayAnimation(PlayerState.ATTACK, eAnimationDetail.NORMAL_ATTACK_SKILL);
         }
         [Button("Play Special Melee Attack")]
-        public void PlaySpecialMeleeAttack()
+        public void PlaySpecialMeleeAttack(float attackSpeed)
         {
+            this.Anim.SetFloat("AttackSpeed", attackSpeed);
             PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SPECIAL_ATTACK_MELEE);
         }
         [Button("Play Special Range Attack")]
-        public void PlaySpecialRangeAttack()
+        public void PlaySpecialRangeAttack(float attackSpeed)
         {
+            this.Anim.SetFloat("AttackSpeed", attackSpeed);
             PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SPECIAL_ATTACK_RANGE);
         }
         [Button("Play Special Skill Attack")]
-        public void PlaySpecialSkillAttack()
+        public void PlaySpecialSkillAttack(float attackSpeed)
         {
+            this.Anim.SetFloat("AttackSpeed", attackSpeed);
             PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SPECIAL_ATTACK_SKILL);
         }
         [Button("Play Concentrate")]
