@@ -10,6 +10,7 @@ namespace AFK.Idle
         [SerializeField] HeroLoader heroLoader;
         private HeroController heroController;
         private string chosenHeroId = "H0001";
+        public UnitData Data => this.heroLoader?.Data;
         void Awake()
         {
             if (Instance == null)

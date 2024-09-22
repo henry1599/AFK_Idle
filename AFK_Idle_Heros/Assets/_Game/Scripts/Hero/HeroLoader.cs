@@ -13,6 +13,7 @@ namespace AFK.Idle
         private UnitData heroData;
         private GameObject heroPrefab;
         public HeroController Hero {get; private set;}
+        public UnitData Data => this.heroData;
         public HeroController LoadHero(string id)
         {
             this.heroData = this.unitsConfig.GetUnitData(id);
