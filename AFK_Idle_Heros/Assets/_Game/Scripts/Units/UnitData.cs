@@ -7,10 +7,12 @@ namespace AFK.Idle
     [CreateAssetMenu(fileName = "UnitData", menuName = "AFK Config/UnitData", order = 1)]
     public class UnitData : ScriptableObject
     {
-        public string UnitName;
-        public string UnitCode;
+        public string Name;
+        public string Code;
         public string SPUMCode;
-        public GameObject UnitPrefab;
-        public Sprite UnitIcon;
+        public GameObject Prefab;
+        public Sprite Icon;
+        public eUnitType Type;
+        public eUnitAttackKind AttackKind;
     }
 }

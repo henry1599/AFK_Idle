@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e890cffa1e83d84aa20c6c2da0f0781, type: 3}
   m_Name: H0001
   m_EditorClassIdentifier: 
-  UnitName: Bunny
-  UnitCode: H0001
+  Name: Bunny
+  Code: H0001
   SPUMCode: SPUM_20240920150500065
-  UnitPrefab: {fileID: 5866611566092332232, guid: 5d7b0840694981a45b4810505d2ab050, type: 3}
-  UnitIcon: {fileID: 21300000, guid: 844a5870e01f4d34e93615360dd7a5cd, type: 3}
+  Prefab: {fileID: 1477638321898759688, guid: 5d7b0840694981a45b4810505d2ab050, type: 3}
+  Icon: {fileID: 21300000, guid: 844a5870e01f4d34e93615360dd7a5cd, type: 3}
+  Type: 0
+  AttackKind: 0
+  AttackType: 0

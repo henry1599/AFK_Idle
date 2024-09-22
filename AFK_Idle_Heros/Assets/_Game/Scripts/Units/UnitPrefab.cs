@@ -5,7 +5,6 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
 using RotaryHeart.Lib.SerializableDictionary;
-using Sirenix.Utilities;
 
 namespace AFK.Idle 
 {
@@ -22,12 +21,21 @@ namespace AFK.Idle
         BUFF,
         SIT
     }
-    [System.Serializable]
-    public class HeroData
+    public enum eUnitType
     {
-        public string SPUMCode;
-        public string HeroCode;
-        public string HeroName;
+        HERO,
+        HORSE
+    }
+    public enum eUnitAttackKind
+    {
+        MELEE,
+        RANGE,
+        SKILL
+    }
+    public enum eUnitAttackType
+    {
+        NORMAL,
+        SPECIAL
     }
     [System.Serializable]
     public class AnimationDict : SerializableDictionaryBase<eAnimationDetail, AnimationClip> {}
@@ -46,7 +54,8 @@ namespace AFK.Idle
             {eAnimationDetail.SIT, "sit"}
         };
         public Animator Anim;
-        public HeroData Data;
+        private UnitData data;
+        [ShowInInspector] public UnitData Data => this.data;
         public bool showData;
         [ShowIf(nameof(showData)), SerializeField] private string unitType;
         [ShowIf(nameof(showData)), SerializeField] private List<SpumPackage> spumPackages = new List<SpumPackage>();
@@ -63,6 +72,10 @@ namespace AFK.Idle
         void Start()
         {
             OverrideControllerInit();
+        }
+        public void Setup(UnitData data)
+        {
+            this.data = data;
         }
         public void OverrideControllerInit()
         {
@@ -254,6 +267,41 @@ namespace AFK.Idle
         {
             PlayAnimation(PlayerState.MOVE);
         }
+        public void PlayAttack(float attackSpeed, eUnitAttackType attackType = default)
+        {
+            this.Anim.SetFloat("AttackSpeed", attackSpeed);
+            switch (attackType)
+            {
+                case eUnitAttackType.NORMAL:
+                    switch (Data.AttackKind)
+                    {
+                        case eUnitAttackKind.MELEE:
+                            PlayNormalMeleeAttack(attackSpeed);
+                            break;
+                        case eUnitAttackKind.RANGE:
+                            PlayNormalRangeAttack(attackSpeed);
+                            break;
+                        case eUnitAttackKind.SKILL:
+                            PlayNormalSkillAttack(attackSpeed);
+                            break;
+                    }
+                    break;
+                case eUnitAttackType.SPECIAL:
+                    switch (Data.AttackKind)
+                    {
+                        case eUnitAttackKind.MELEE:
+                            PlaySpecialMeleeAttack(attackSpeed);
+                            break;
+                        case eUnitAttackKind.RANGE:
+                            PlaySpecialRangeAttack(attackSpeed);
+                            break;
+                        case eUnitAttackKind.SKILL:
+                            PlaySpecialSkillAttack(attackSpeed);
+                            break;
+                    }
+                    break;
+            }
+        }
         [Button("Play Normal Melee Attack")]
         public void PlayNormalMeleeAttack(float attackSpeed)
         {
@@ -304,6 +352,10 @@ namespace AFK.Idle
         public void PlaySit()
         {
             PlayAnimation(PlayerState.ATTACK, eAnimationDetail.SIT);
+        }
+        public void PlayDeath()
+        {
+            PlayAnimation(PlayerState.DEATH);
         }
     }
 }

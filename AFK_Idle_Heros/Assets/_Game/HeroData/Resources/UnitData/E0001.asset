@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e890cffa1e83d84aa20c6c2da0f0781, type: 3}
   m_Name: E0001
   m_EditorClassIdentifier: 
-  UnitName: Enemy0001
-  UnitCode: E0001
+  Name: Enemy0001
+  Code: E0001
   SPUMCode: SPUM_20240918210305833
-  UnitPrefab: {fileID: 8791186441537545368, guid: 3aea3e6814ac76741930b5743eb9374a, type: 3}
-  UnitIcon: {fileID: 21300000, guid: 07c6e390894e54f4882c6c358892963c, type: 3}
+  Prefab: {fileID: 661251048543297566, guid: 3aea3e6814ac76741930b5743eb9374a, type: 3}
+  Icon: {fileID: 21300000, guid: 07c6e390894e54f4882c6c358892963c, type: 3}
+  Type: 0
+  AttackKind: 0
+  AttackType: 0

@@ -33,7 +33,7 @@ namespace AFK.Idle
             {
                 return null;
             }
-            return data.UnitPrefab;
+            return data.Prefab;
         }
         public Sprite GetUnitIcon(string id)
         {
@@ -42,7 +42,7 @@ namespace AFK.Idle
             {
                 return null;
             }
-            return data.UnitIcon;
+            return data.Icon;
         }
 #if UNITY_EDITOR
         [Button]
@@ -57,7 +57,7 @@ namespace AFK.Idle
                 {
                     continue;
                 }
-                Ids.Add(unitDataInstance.UnitCode);
+                Ids.Add(unitDataInstance.Code);
             }
         }
 #endif

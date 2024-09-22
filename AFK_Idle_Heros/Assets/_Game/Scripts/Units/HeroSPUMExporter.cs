@@ -29,6 +29,8 @@ namespace AFK.Idle.EditorTools
         [SerializeField] Button prevButton;
         [SerializeField] Camera captureCamera;
         [SerializeField] LayerMask captureLayer;
+        [SerializeField] TMP_Dropdown typeDropdown;
+        [SerializeField] TMP_Dropdown kindDropdown;
         private List<SPUM_Prefabs> heroList = new List<SPUM_Prefabs>();
         private int index = 0;
         private RenderTexture rt;
@@ -86,16 +88,20 @@ namespace AFK.Idle.EditorTools
             var curHeroPrefab = curHeroInstance.GetComponent<SPUM_Prefabs>();
             this.heroSPUMCode.text = curHeroPrefab._code;
 
-            var unitPrefab = GetUnitPrefabFromLinker(curHeroPrefab._code);
-            if (unitPrefab != null)
+            var unitData = GetUnitDataFromLinker(curHeroPrefab._code);
+            if (unitData != null)
             {
-                this.heroCode.text = unitPrefab.Data.HeroCode;
-                this.heroName.text = unitPrefab.Data.HeroName;
+                this.heroCode.text = unitData.Code;
+                this.heroName.text = unitData.Name;
+                this.typeDropdown.value = unitData.Type == eUnitType.HERO ? 0 : 1;
+                this.kindDropdown.value = unitData.AttackKind == eUnitAttackKind.MELEE ? 0 : unitData.AttackKind == eUnitAttackKind.RANGE ? 1 : 2;
             }
             else
             {
                 this.heroCode.text = "";
                 this.heroName.text = "";
+                this.typeDropdown.value = 0;
+                this.kindDropdown.value = 0;
             }
         }
         UnitPrefab GetUnitPrefabFromLinker(string SPUMCode)
@@ -106,6 +112,18 @@ namespace AFK.Idle.EditorTools
                 {
                     var heroPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(string.Format("{0}{1}/{2}.prefab", EXPORT_PATH, linker.HeroCode, linker.HeroCode));
                     return heroPrefab?.GetComponent<UnitPrefab>();
+                }
+            }
+            return null;
+        }
+        UnitData GetUnitDataFromLinker(string SPUMCode)
+        {
+            foreach (var linker in heroLinkerList.HeroLinkers)
+            {
+                if (linker.SPUMCode == SPUMCode)
+                {
+                    var heroData = AssetDatabase.LoadAssetAtPath<UnitData>(string.Format("{0}{1}.asset", UNIT_DATA_PATH, linker.HeroCode));
+                    return heroData;
                 }
             }
             return null;
@@ -172,12 +190,6 @@ namespace AFK.Idle.EditorTools
             RuntimeAnimatorController animator = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(clonedAnimator);
             unit.Anim = unit.gameObject.SafeAddComponent<Animator>();
             unit.Anim.runtimeAnimatorController = animator;
-            unit.Data = new HeroData()
-            {
-                HeroCode = heroCode,
-                HeroName = heroName,
-                SPUMCode = spumCode
-            };
             unit.QuickSetup();
             this.heroLinkerList.AddNewLinker(spumCode, heroCode);
 
@@ -195,15 +207,19 @@ namespace AFK.Idle.EditorTools
             string heroCode = this.heroCode.text;
             string heroName = this.heroName.text;
             string spumCode = this.heroSPUMCode.text;
+            string heroType = this.typeDropdown.options[this.typeDropdown.value].text;
+            string heroKind = this.kindDropdown.options[this.typeDropdown.value].text;
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             Sprite icon = AssetDatabase.LoadAssetAtPath<Sprite>(string.Format("{0}{1}/{2}.png", EXPORT_PATH, heroCode, heroCode));
 
             UnitData data = ScriptableObject.CreateInstance<UnitData>();
-            data.UnitName = heroName;
-            data.UnitCode = heroCode;
+            data.Name = heroName;
+            data.Code = heroCode;
             data.SPUMCode = spumCode;
-            data.UnitPrefab = prefab;
-            data.UnitIcon = icon;
+            data.Prefab = prefab;
+            data.Icon = icon;
+            data.Type = ToUnitType(heroType);
+            data.AttackKind = ToAttackKind(heroKind);
 
             string dataPath = UNIT_DATA_PATH + heroCode + ".asset";
             AssetDatabase.CreateAsset(data, dataPath);
@@ -211,9 +227,8 @@ namespace AFK.Idle.EditorTools
         }
         void CreateHeroIcon(string prefabPath)
         {
-            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-            UnitPrefab unit = prefab.GetComponent<UnitPrefab>();
-            CaptureSingleTake(unit.Data.HeroCode, 2048);
+            string id = this.heroCode.text;
+            CaptureSingleTake(id, 2048);
         }
         public void CaptureSingleTake(string id, int captureSize = 2048)
         {
@@ -258,7 +273,34 @@ namespace AFK.Idle.EditorTools
             Directory.CreateDirectory(path);
             return path + "/";
         }
-
+        public eUnitType ToUnitType(string str)
+        {
+            if (str.ToLower().Contains("hero"))
+            {
+                return eUnitType.HERO;
+            }
+            if (str.ToLower().Contains("horse"))
+            {
+                return eUnitType.HORSE;
+            }
+            return default;
+        }
+        public eUnitAttackKind ToAttackKind(string str)
+        {
+            if (str.ToLower().Contains("melee"))
+            {
+                return eUnitAttackKind.MELEE;
+            }
+            if (str.ToLower().Contains("ranged"))
+            {
+                return eUnitAttackKind.RANGE;
+            }
+            if (str.ToLower().Contains("skill"))
+            {
+                return eUnitAttackKind.SKILL;
+            }
+            return default;
+        }
 
         [MenuItem("Tools/Remove All Unit Data")]
         public static void RemoveAllUnitData()
