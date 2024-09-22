@@ -82,6 +82,8 @@ namespace AFK.Idle
         }
         void OnDrawGizmos()
         {
+            if (this.attackBoxPoint == null)
+                return;
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(attackBoxPoint.position, boxSize);
         }

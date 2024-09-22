@@ -333,6 +333,7 @@ GameObject:
   m_Component:
   - component: {fileID: 791550564}
   - component: {fileID: 791550565}
+  - component: {fileID: 791550566}
   m_Layer: 0
   m_Name: Hero Field
   m_TagString: Untagged
@@ -371,6 +372,22 @@ MonoBehaviour:
   container: {fileID: 791550564}
   spawnPosition: {fileID: 325374402}
   unitsConfig: {fileID: 11400000, guid: 18ef9edae219b764689e50ae928ff664, type: 2}
+--- !u!114 &791550566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791550563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e87a46f6b9b77194bb30b575f63ad80d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackBoxPoint: {fileID: 0}
+  boxSize: {x: 0, y: 0}
+  attackSpeed: 0
+  attackDamage: 0
 --- !u!1 &1559008443
 GameObject:
   m_ObjectHideFlags: 0
