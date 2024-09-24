@@ -101,6 +101,11 @@ namespace HenryDev.Math
             this.precision = Mathf.Min(this.suffixCycle, precision);
             Value = value;
         }
+        public IInt(int value, int precision = 3)
+        {
+            this.precision = Mathf.Min(this.suffixCycle, precision);
+            Value = value.ToString();
+        }
         public string ToScaledString()
         {
             string actualValue = CleanValue(this);
@@ -312,6 +317,24 @@ namespace HenryDev.Math
             }
 
             return sb.Length == 0 ? "0" : sb.ToString();
+        }
+        public void Assign(int value)
+        {
+            Value = value.ToString();
+        }
+        public void Assign(IInt value)
+        {
+            Value = value.Value;
+        }
+        public bool IsLessThan(int value)
+        {
+            IInt other = new IInt(value.ToString());
+            IInt result = other - this;
+            return result.IsSigned;
+        }
+        public bool IsEqualTo(int value)
+        {
+            return CleanValue(Value) == CleanValue(new IInt(value.ToString()));
         }
     }
 }

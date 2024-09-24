@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d39dd58fb884e84395fa3a1c6474396, type: 3}
   m_Name: ManagersConfig
   m_EditorClassIdentifier: 
-  ManagerPrefabs: []
+  ManagerPrefabs:
+  - {fileID: 1267809263712052104, guid: 37cb9964ccf913648a32a7ff6bddc570, type: 3}
+  - {fileID: 5086998329117218764, guid: 05c3534ce4a52fc4dad0ba383e2ba8b1, type: 3}
+  - {fileID: 2619555767410779038, guid: 934ceb981279c0043a88e169fccc48d7, type: 3}
+  - {fileID: 4521512292471099436, guid: 9b4d7fed97fff0d458cd3ef51a14260e, type: 3}

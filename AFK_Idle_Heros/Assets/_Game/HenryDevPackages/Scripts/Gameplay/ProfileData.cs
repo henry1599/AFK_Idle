@@ -9,7 +9,7 @@ namespace HenryDev.Gameplay
     public class ProfileData
     {
         public List<HeroSaveData> HeroSaveDatas;
-        GlobalStatsSaveData GlobalStatsSaveData;
+        public GlobalStatsSaveData GlobalStatsSaveData;
         public float Volume;
         public ProfileData()
         {

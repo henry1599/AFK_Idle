@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace HenryDev
 {
-    public class Health : ChangeableValue
+    public class Health : ChangeableValueIInt
     {
         
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace HenryDev
 {
-    public interface IChangeableValue
+    public interface IChangeableValue<CustomValue>
     {
         /// <summary>
         /// Value is decrease to 0
@@ -13,24 +13,24 @@ namespace HenryDev
         /// <summary>
         /// Has value been changed and how much?
         /// </summary>
-        event System.Action<float> OnValueChanged;
+        event System.Action<CustomValue> OnValueChanged;
 
-        void InitValue(float value, bool startFrom0 = true);
-        void ForceInitValue(float value, bool startFrom0 = true);
+        void InitValue(CustomValue customValue, bool startFrom0 = true);
+        void ForceInitValue(CustomValue customValue, bool startFrom0 = true);
         /// <summary>
         /// Plus "value" param to current value
         /// </summary>
         /// <param name="value"></param>
-        void UpdateValue(float value);
+        void UpdateValue(CustomValue value);
         void MakeEmpty();
         /// <summary>
         /// Update max value, update current value in proportional to max value
         /// </summary>
         /// <param name="maxValue"></param>
-        void UpdateMaxValue(float maxValue);
+        void UpdateMaxValue(CustomValue maxValue);
 
-        float GetMaxValue();
-        float GetValue();
-        float GetValueNormalized();
+        CustomValue GetMaxValue();
+        CustomValue GetValue();
+        CustomValue GetValueNormalized();
     }
 }

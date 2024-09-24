@@ -12,9 +12,8 @@ namespace AFK.Idle
         [SerializeField] UnitsConfig unitsConfig;
         private UnitData heroData;
         private GameObject heroPrefab;
-        public HeroController Hero {get; private set;}
         public UnitData Data => this.heroData;
-        public HeroController LoadHero(string id)
+        public UnitPrefab LoadHero(string id)
         {
             this.heroData = this.unitsConfig.GetUnitData(id);
             if (this.heroData == null)
@@ -22,8 +21,10 @@ namespace AFK.Idle
                 return null;
             }
             this.heroPrefab = Instantiate(this.heroData.Prefab, this.spawnPosition.position, Quaternion.identity, this.container);
-            Hero = this.heroPrefab.SafeAddComponent<HeroController>();
-            return Hero;
+            this.heroPrefab.SafeAddComponent<UnitMonoBehaviour>();
+            var prefab = this.heroPrefab.GetComponent<UnitPrefab>();
+            prefab.Setup(this.heroData);
+            return prefab;
         }
     }
 }
