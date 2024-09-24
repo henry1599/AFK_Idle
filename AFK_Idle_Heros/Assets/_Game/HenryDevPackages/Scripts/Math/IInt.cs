@@ -260,7 +260,8 @@ namespace HenryDev.Math
                 Array.Copy(result, 0, finalResult, 1, maxLen);
                 return new string(finalResult);
             }
-            return new string(result);
+            string resultStr = new string(result);
+            return string.IsNullOrEmpty(resultStr) ? "0" : resultStr;
         }
 
         private static string SubtractAbsoluteValues(string a, string b)
@@ -286,8 +287,8 @@ namespace HenryDev.Math
                 }
                 result[i] = (char)(digitDiff + '0');
             }
-
-            return new string(result).TrimStart('0');
+            string resultStr = new string(result).TrimStart('0');
+            return string.IsNullOrEmpty(resultStr) ? "0" : resultStr;
         }
         private static string MultiplyAbsoluteValues(string a, string b)
         {
@@ -316,7 +317,8 @@ namespace HenryDev.Math
                 }
             }
 
-            return sb.Length == 0 ? "0" : sb.ToString();
+            string resultStr = sb.Length == 0 ? "0" : sb.ToString();
+            return string.IsNullOrEmpty(resultStr) ? "0" : resultStr;
         }
         public void Assign(int value)
         {
@@ -330,7 +332,7 @@ namespace HenryDev.Math
         {
             IInt other = new IInt(value.ToString());
             IInt result = other - this;
-            return result.IsSigned;
+            return !result.IsSigned;
         }
         public bool IsEqualTo(int value)
         {

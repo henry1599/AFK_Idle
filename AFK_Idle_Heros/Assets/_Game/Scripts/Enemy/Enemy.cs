@@ -13,7 +13,7 @@ namespace AFK.Idle
         public void Start()
         {
             this.health = GetComponent<Health>();
-            this.health?.InitValue(new IInt(this.MaxHealth));
+            this.health?.InitValue(new IInt(this.MaxHealth), false);
         }
     }
 }

@@ -521,6 +521,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 576648469661838751, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
+      propertyPath: MaxHealth
+      value: 49
+      objectReference: {fileID: 0}
     - target: {fileID: 2814727411216355244, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
       propertyPath: m_Name
       value: E0000
@@ -561,7 +565,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sightPoint: {fileID: 289959269}
   boxSightSize: {x: 5.25, y: 5}
-  attackRange: 0.5
   heroLoader: {fileID: 791550565}
   heroController: {fileID: 791550566}
 --- !u!4 &1559008445
