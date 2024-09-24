@@ -5,6 +5,7 @@ namespace AFK.Idle
     public class Controller : MonoBehaviour
     {
         UnitPrefab prefab;
+        public UnitPrefab Prefab => this.prefab;
         public void Setup(UnitPrefab prefab)
         {
             this.prefab = prefab;

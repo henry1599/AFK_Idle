@@ -38,6 +38,14 @@ namespace AFK.Idle
 
             this.attackDamage = statData.Attack;
             this.attackSpeed = statData.AttackSpeed;
+
+            if (this.controller != null)
+                this.controller.Prefab.OnAttackPointTrigger_Melee += OnAttackAnimationTrigger;
+        }
+        void OnDestroy()
+        {
+            if (this.controller != null)
+                this.controller.Prefab.OnAttackPointTrigger_Melee += OnAttackAnimationTrigger;
         }
 
         private void ResetTimer()
@@ -82,13 +90,6 @@ namespace AFK.Idle
             Vector3 direction = (target.transform.position - transform.position).normalized;
             controller.FaceDirection(direction);
             controller.PlayAttackAnim(this.attackSpeed);
-            Health health = target.GetComponent<Health>();
-            if (health == null)
-            {
-                state = eState.Idle;
-                return;
-            }
-            health.UpdateValue(new IInt("-" + this.attackDamage));
         }
 
         private void MoveState(GameObject target)
@@ -137,6 +138,19 @@ namespace AFK.Idle
                 }
             }
             return target;
+        }
+        void OnAttackAnimationTrigger()
+        {
+            var enemyInAttack = CastEnemyInAttackZone();
+            if (enemyInAttack == null)
+                return;
+            Health health = enemyInAttack.GetComponent<Health>();
+            if (health == null)
+            {
+                state = eState.Idle;
+                return;
+            }
+            health.UpdateValue(new IInt("-" + this.attackDamage));
         }
         void OnDrawGizmos()
         {

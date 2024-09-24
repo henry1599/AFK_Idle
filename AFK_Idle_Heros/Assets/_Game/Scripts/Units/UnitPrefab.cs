@@ -69,6 +69,8 @@ namespace AFK.Idle
         [ShowIf(nameof(showData)), SerializeField] private AnimationDict deathList = new();
         [ShowIf(nameof(showData)), SerializeField] private AnimationDict otherList = new();
         public bool HasHorse => string.Compare(this.unitType, "horse", StringComparison.OrdinalIgnoreCase) == 0;
+        public Action OnAttackPointTrigger_Melee;
+        public Action OnAttackPointTrigger_Range;
         void Start()
         {
             OverrideControllerInit();
@@ -181,6 +183,12 @@ namespace AFK.Idle
                                 if (clip.name.ToLower().Contains(detail.Value))
                                 {
                                     this.attackList.TryAdd(detail.Key, clip);
+                                    // var events = clip.events;
+                                    // if (events.Length > 0)
+                                    // {
+                                    //     var triggerEvent = events[0];
+                                    //     triggerEvent.functionName = "AttackAnimationPointTrigger";
+                                    // }
                                 }
                             }
                         }
@@ -222,6 +230,14 @@ namespace AFK.Idle
             }
             
             return clip;
+        }
+        public void AttackAnimationPointTrigger_Melee()
+        {
+            OnAttackPointTrigger_Melee?.Invoke();
+        }
+        public void AttackAnimationPointTrigger_Range()
+        {
+            OnAttackPointTrigger_Range?.Invoke();
         }
 #endif
         public void PlayAnimation(PlayerState PlayState, eAnimationDetail detail = eAnimationDetail.NO_DETAIL)

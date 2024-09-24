@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66435060b6db1e746b60b0cbdad0f176, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1506570242
+--- !u!1001 &1166352443
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -483,11 +483,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 280847478950216960, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.8490257
+      value: -1.77
       objectReference: {fileID: 0}
     - target: {fileID: 280847478950216960, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.6053007
+      value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 280847478950216960, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
       propertyPath: m_LocalPosition.z
@@ -520,10 +520,6 @@ PrefabInstance:
     - target: {fileID: 280847478950216960, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 576648469661838751, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
-      propertyPath: MaxHealth
-      value: 49
       objectReference: {fileID: 0}
     - target: {fileID: 2814727411216355244, guid: e3f083451eb4fdc428eb98825a294536, type: 3}
       propertyPath: m_Name
@@ -653,4 +649,4 @@ SceneRoots:
   - {fileID: 654119536}
   - {fileID: 1559008445}
   - {fileID: 46202845}
-  - {fileID: 1506570242}
+  - {fileID: 1166352443}
